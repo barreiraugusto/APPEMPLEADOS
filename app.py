@@ -1,12 +1,20 @@
 from tkinter import *
 from tkinter import ttk
+from tkinter import messagebox
 import sqlite3
+import os
 import re
 
 
+# FUNCIONES DE MENSAJES
+def consulta(titulo, mensaje):
+    if messagebox.askyesno(f"{titulo}", f"{mensaje}"):
+        return True
+    else:
+        return False
+
+
 # FUNCIONES PARA LA BASE DE DATOS
-
-
 def conexion():
     con = sqlite3.connect("empleados.db")
     return con
@@ -36,13 +44,6 @@ conexion()
 crear_tabla()
 
 
-def verificar_dato(legajo):
-    patron = "^[\d]*$"  # regex para el campo cadena
-    if re.match(patron, legajo):
-        alta()
-        alta_base()
-
-
 def alta_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     con = conexion()
     cursor = con.cursor()
@@ -70,111 +71,141 @@ def modificar_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     con.commit()
 
 
-######################## VISTA ########################
-
-root = Tk()
-root.title("ALTA Y BAJA DE PERSONAL")
-root.resizable(0, 0)
-p1 = PhotoImage(
-    file="/home/augusto/Documentos/Diplomatura en Python/ENTREGA INTERMEDIA/CODIGO/APPEMPLEADOS/icono.png"
-)
-root.iconphoto(False, p1)
-
 # FUNCIONES
-def alta():
-    alta_base(
-        var_legajo.get(),
-        var_nombre.get(),
-        var_apellido.get(),
-        var_area.get(),
-        var_sueldo.get(),
-        var_cuil.get(),
-        var_ingreso.get(),
-    )
-    tabla.insert(
-        "",
-        "end",
-        text=var_legajo.get(),
-        values=(
-            var_nombre.get(),
-            var_apellido.get(),
-            var_area.get(),
-            var_sueldo.get(),
-            var_cuil.get(),
-            var_ingreso.get(),
-        ),
-    )
-
-    legajo.delete(0, END)
-    nombre.delete(0, END)
-    apellido.delete(0, END)
-    area.delete(0, END)
-    sueldo.delete(0, END)
-    cuil.delete(0, END)
-    ingreso.delete(0, END)
-    boton_ver_datos.config(state=NORMAL)
+def alta(tabla, legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
+    try:
+        patron = "^\d+$"
+        if re.match(patron, legajo.get()):
+            if re.match(patron, cuil.get()):
+                alta_base(
+                    legajo.get(),
+                    nombre.get(),
+                    apellido.get(),
+                    area.get(),
+                    sueldo.get(),
+                    cuil.get(),
+                    fecha_ingreso.get(),
+                )
+                tabla.insert(
+                    "",
+                    "end",
+                    text=var_legajo.get(),
+                    values=(
+                        var_nombre.get(),
+                        var_apellido.get(),
+                        var_area.get(),
+                        var_sueldo.get(),
+                        var_cuil.get(),
+                        var_ingreso.get(),
+                    ),
+                )
+                legajo.set("")
+                nombre.set("")
+                apellido.set("")
+                area.set("")
+                sueldo.set("")
+                cuil.set("")
+                fecha_ingreso.set("")
+                boton_ver_datos.config(state=NORMAL)
+                messagebox.showinfo(title="Alta", message="Se cargo correctamente")
+                entry_legajo.focus_set()
+                actualizar_treeview(tabla)
+            else:
+                messagebox.showerror(
+                    title="Error en el cuil", message="Ingreselo sin guiones"
+                )
+        else:
+            messagebox.showerror(
+                title="Error en el legajo", message="El valor tiene que ser numérico"
+            )
+    except:
+        messagebox.showerror(title="Alta", message="Error al cargar")
 
 
 def baja():
-    item = tabla.focus()
-    legajo = tabla.item(item)["text"]
-    baja_base(legajo)
-    tabla.delete(item)
-    if len(tabla.get_children()) == 0:
-        boton_ver_datos.config(state="disabled")
+    if consulta("Baja de empleado", "¿Esta seguro de borrar el empleado?"):
+        item = tabla.focus()
+        legajo = tabla.item(item)["text"]
+        baja_base(legajo)
+        tabla.delete(item)
+        if len(tabla.get_children()) == 0:
+            boton_ver_datos.config(state="disabled")
+        entry_legajo.focus_set()
+    else:
+        pass
 
 
-def ver_datos():
+def ver_datos(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     item = tabla.focus()
     texto = tabla.item(item)["text"]
     valores = tabla.item(item)["values"]
-    legajo.insert(0, texto)
-    nombre.insert(0, valores[0])
-    apellido.insert(0, valores[1])
-    area.insert(0, valores[2])
-    sueldo.insert(0, valores[3])
-    cuil.insert(0, valores[4])
-    ingreso.insert(0, valores[5])
+    legajo.set(texto)
+    nombre.set(valores[0])
+    apellido.set(valores[1])
+    area.set(valores[2])
+    sueldo.set(valores[3])
+    cuil.set(valores[4])
+    fecha_ingreso.set(valores[5])
     boton_modificar.config(state="normal")
     boton_ver_datos.config(state=DISABLED)
     boton_alta.config(state=DISABLED)
     boton_baja.config(state=DISABLED)
+    entry_legajo.focus_set()
 
 
-def modificar():
-    item = tabla.focus()
-    tabla.item(
-        item,
-        text=var_legajo.get(),
-        values=(
-            var_nombre.get(),
-            var_apellido.get(),
-            var_area.get(),
-            var_sueldo.get(),
-            var_cuil.get(),
-            var_ingreso.get(),
-        ),
-    )
-    modificar_base(
-        var_legajo.get(),
-        var_nombre.get(),
-        var_apellido.get(),
-        var_area.get(),
-        var_sueldo.get(),
-        var_cuil.get(),
-        var_ingreso.get(),
-    )
-    legajo.delete(0, END)
-    nombre.delete(0, END)
-    apellido.delete(0, END)
-    area.delete(0, END)
-    sueldo.delete(0, END)
-    cuil.delete(0, END)
-    ingreso.delete(0, END)
+def limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
+    legajo.set("")
+    nombre.set("")
+    apellido.set("")
+    area.set("")
+    sueldo.set("")
+    cuil.set("")
+    fecha_ingreso.set("")
     boton_ver_datos.config(state="normal")
     boton_modificar.config(state=DISABLED)
     boton_alta.config(state="normal")
     boton_baja.config(state="normal")
+    entry_legajo.focus_set()
+
+
+def modificar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
+    if consulta("Modificar empleado", "¿Esta seguro de modificar el empleado?"):
+        patron = "^\d+$"
+        if re.match(patron, legajo.get()):
+            if re.match(patron, cuil.get()):
+                modificar_base(
+                    legajo.get(),
+                    nombre.get(),
+                    apellido.get(),
+                    area.get(),
+                    sueldo.get(),
+                    cuil.get(),
+                    fecha_ingreso.get(),
+                )
+                item = tabla.focus()
+                tabla.item(
+                    item,
+                    text=var_legajo.get(),
+                    values=(
+                        var_nombre.get(),
+                        var_apellido.get(),
+                        var_area.get(),
+                        var_sueldo.get(),
+                        var_cuil.get(),
+                        var_ingreso.get(),
+                    ),
+                )
+                limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
+            else:
+                messagebox.showerror(
+                    title="Error en el cuil", message="Ingreselo sin guiones"
+                )
+        else:
+            messagebox.showerror(
+                title="Error en el legajo", message="El valor tiene que ser numérico"
+            )
+    else:
+        limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
 
 
 def tema_oscuro():
@@ -230,8 +261,8 @@ def actualizar_treeview(tabla):
     con = conexion()
     cursor = con.cursor()
     datos = cursor.execute(sql)
-
     resultado = datos.fetchall()
+    resultado.sort()
     for fila in resultado:
         tabla.insert(
             "",
@@ -241,7 +272,19 @@ def actualizar_treeview(tabla):
         )
 
 
-# DECLARACION DE VARIABLES
+######################## VISTA ########################
+
+root = Tk()
+root.title("ALTA Y BAJA DE PERSONAL")
+root.resizable(0, 0)
+
+try:
+    ruta_icono = os.path.join(os.path.dirname(__file__), "img/icono.png")
+    root.iconphoto(False, PhotoImage(file=ruta_icono))
+except:
+    pass
+
+# DECLARACION DE VARIABLES DE TKINTER
 var_legajo = StringVar()
 var_nombre = StringVar()
 var_apellido = StringVar()
@@ -258,7 +301,7 @@ frame_botones = Frame(root)
 frame_botones.grid(row=1, column=0, pady=10, sticky=E)
 
 frame_tabla = Frame(root)
-frame_tabla.grid(row=2, column=0, pady=10, sticky=EW)
+frame_tabla.grid(row=2, column=0, sticky=EW)
 
 frame_footer = Frame(root)
 frame_footer.grid(row=3, column=0, pady=10, sticky=E)
@@ -267,19 +310,18 @@ frame_footer.grid(row=3, column=0, pady=10, sticky=E)
 # MENU
 menubar = Menu(root)
 root.config(menu=menubar)
-menubar.configure(background="red")
 apariencia = Menu(menubar, tearoff=0)
 apariencia.add_command(label="Oscuro", command=lambda: tema_oscuro())
 apariencia.add_command(label="Claro", command=lambda: tema_claro())
-
 menubar.add_cascade(label="Apariencia", menu=apariencia)
 
 
 # FRAME INPUTS
 label_legajo = ttk.Label(frame_inputs, text=("N° de legajo"))
 label_legajo.grid(row=0, column=0, padx=10, pady=10, sticky=W)
-legajo = ttk.Entry(frame_inputs, textvariable=var_legajo, width=30)
-legajo.grid(row=0, column=1, padx=10, pady=10, sticky=W)
+entry_legajo = ttk.Entry(frame_inputs, textvariable=var_legajo, width=30)
+entry_legajo.grid(row=0, column=1, padx=10, pady=10, sticky=W)
+entry_legajo.focus_set()
 
 label_nombre = ttk.Label(frame_inputs, text=("Nombre"))
 label_nombre.grid(row=1, column=0, padx=10, pady=10, sticky=W)
@@ -312,19 +354,54 @@ ingreso = ttk.Entry(frame_inputs, textvariable=var_ingreso, width=30)
 ingreso.grid(row=2, column=3, padx=10, pady=10, sticky=W)
 
 # FRAME BOTONES
-
 boton_alta = Button(
-    frame_botones, text="Alta", command=lambda: verificar_dato(var_legajo.get())
+    frame_botones,
+    text="Alta",
+    command=lambda: alta(
+        tabla,
+        var_legajo,
+        var_nombre,
+        var_apellido,
+        var_area,
+        var_sueldo,
+        var_cuil,
+        var_ingreso,
+    ),
 )
 boton_alta.grid(row=0, column=0, padx=10, pady=10)
+
 boton_baja = Button(frame_botones, text="Baja", command=lambda: baja())
 boton_baja.grid(row=0, column=1, padx=10, pady=10)
+
 boton_modificar = Button(
-    frame_botones, text="Modificar", state=DISABLED, command=lambda: modificar()
+    frame_botones,
+    text="Modificar",
+    state=DISABLED,
+    command=lambda: modificar(
+        var_legajo,
+        var_nombre,
+        var_apellido,
+        var_area,
+        var_sueldo,
+        var_cuil,
+        var_ingreso,
+    ),
 )
 boton_modificar.grid(row=0, column=2, padx=10, pady=10)
 
-boton_ver_datos = Button(frame_botones, text="Ver datos", command=lambda: ver_datos())
+boton_ver_datos = Button(
+    frame_botones,
+    text="Ver datos",
+    command=lambda: ver_datos(
+        var_legajo,
+        var_nombre,
+        var_apellido,
+        var_area,
+        var_sueldo,
+        var_cuil,
+        var_ingreso,
+    ),
+)
 boton_ver_datos.grid(row=0, column=3, padx=10, pady=10)
 
 
@@ -337,24 +414,21 @@ tabla["columns"] = (
     "AREA",
     "SUELDO",
     "C.U.I.L.",
-    "FECHA DE INGRESO",
+    "INGRESO",
 )
-tabla.column("#0", width=120, minwidth=120)
-tabla.column("NOMBRE", width=120, minwidth=120)
-tabla.column("APELLIDO", width=120, minwidth=120)
-tabla.column("AREA", width=120, minwidth=120)
-tabla.column("SUELDO", width=120, minwidth=120)
-tabla.column("C.U.I.L.", width=120, minwidth=120)
-tabla.column("FECHA DE INGRESO", width=120, minwidth=120)
+scrollbar = ttk.Scrollbar(frame_tabla, orient="vertical", command=tabla.yview)
+scrollbar.grid(row=0, column=1, sticky=NS)
+tabla.configure(yscrollcommand=scrollbar.set)
+# ESTO SE PUEDE CAMBIAR POR UN FOR QUE PASE ESOS ATRIBUTOS
+tabla.column("#0", width=120, minwidth=120, anchor="w")
+for i in tabla["columns"]:
+    tabla.column(i, width=120, minwidth=120, anchor="w")
 
-tabla.heading("#0", text="Legajo")
-tabla.heading("NOMBRE", text="Nombre")
-tabla.heading("APELLIDO", text="Apellido")
-tabla.heading("AREA", text="Area")
-tabla.heading("SUELDO", text="Sueldo")
-tabla.heading("C.U.I.L.", text="Cuil")
-tabla.heading("FECHA DE INGRESO", text="Ingreso")
-tabla.grid(row=0, column=0, padx=10, pady=10, sticky=EW)
+tabla.heading("#0", text="LEGAJO")
+for i in tabla["columns"]:
+    tabla.heading(i, text=i)
+
+tabla.grid(row=0, column=0, sticky=EW)
 
 actualizar_treeview(tabla)
 
@@ -362,7 +436,6 @@ if len(tabla.get_children()) == 0:
     boton_ver_datos.config(state="disabled")
 
 # FRAME FOOTER
-
 boton_cerrar = Button(frame_footer, text="Cerrar", command=root.quit)
 boton_cerrar.grid(row=0, column=0, padx=10, pady=10)
 
