@@ -26,7 +26,6 @@ def crear_tabla():
         cursor = con.cursor()
         sql = """CREATE TABLE empleado
                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
-                legajo INTEGER UNIQUE,
                 nombre varchar(20) NOT NULL,
                 apellido varchar(20) NOT NULL,
                 area varchar(20) NOT NULL,
@@ -44,11 +43,11 @@ conexion()
 crear_tabla()
 
 
-def alta_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
+def alta_base(nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     con = conexion()
     cursor = con.cursor()
-    data = (legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
-    sql = "INSERT INTO empleado(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso) VALUES(?, ?, ?, ?, ?, ?, ?);"
+    data = (nombre, apellido, area, sueldo, cuil, fecha_ingreso)
+    sql = "INSERT INTO empleado(nombre, apellido, area, sueldo, cuil, fecha_ingreso) VALUES(?, ?, ?, ?, ?, ?);"
     cursor.execute(sql, data)
     con.commit()
 
@@ -56,8 +55,9 @@ def alta_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
 def baja_base(legajo):
     con = conexion()
     cursor = con.cursor()
-    data = (legajo,)
-    sql = "DELETE FROM empleado WHERE legajo = ?;"
+    id = legajo
+    data = (id,)
+    sql = "DELETE FROM empleado WHERE id = ?;"
     cursor.execute(sql, data)
     con.commit()
 
@@ -65,61 +65,56 @@ def baja_base(legajo):
 def modificar_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     con = conexion()
     cursor = con.cursor()
-    data = (nombre, apellido, area, sueldo, cuil, fecha_ingreso, legajo)
-    sql = "UPDATE empleado SET nombre = ?, apellido = ?, area = ?, sueldo = ?, cuil = ?, fecha_ingreso = ? WHERE legajo = ?"
+    id = legajo
+    data = (nombre, apellido, area, sueldo, cuil, fecha_ingreso, id)
+    sql = "UPDATE empleado SET nombre = ?, apellido = ?, area = ?, sueldo = ?, cuil = ?, fecha_ingreso = ? WHERE id = ?"
     cursor.execute(sql, data)
     con.commit()
 
 
 # FUNCIONES
-def alta(tabla, legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
-    try:
-        patron = "^\d+$"
-        if re.match(patron, legajo.get()):
-            if re.match(patron, cuil.get()):
-                alta_base(
-                    legajo.get(),
-                    nombre.get(),
-                    apellido.get(),
-                    area.get(),
-                    sueldo.get(),
-                    cuil.get(),
-                    fecha_ingreso.get(),
-                )
-                tabla.insert(
-                    "",
-                    "end",
-                    text=var_legajo.get(),
-                    values=(
-                        var_nombre.get(),
-                        var_apellido.get(),
-                        var_area.get(),
-                        var_sueldo.get(),
-                        var_cuil.get(),
-                        var_ingreso.get(),
-                    ),
-                )
-                legajo.set("")
-                nombre.set("")
-                apellido.set("")
-                area.set("")
-                sueldo.set("")
-                cuil.set("")
-                fecha_ingreso.set("")
-                boton_ver_datos.config(state=NORMAL)
-                messagebox.showinfo(title="Alta", message="Se cargo correctamente")
-                entry_legajo.focus_set()
-                actualizar_treeview(tabla)
-            else:
-                messagebox.showerror(
-                    title="Error en el cuil", message="Ingreselo sin guiones"
-                )
-        else:
-            messagebox.showerror(
-                title="Error en el legajo", message="El valor tiene que ser numérico"
-            )
-    except:
-        messagebox.showerror(title="Alta", message="Error al cargar")
+def alta(tabla, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
+    # try:
+    patron = "^\d+$"
+    if re.match(patron, cuil.get()):
+        alta_base(
+            nombre.get(),
+            apellido.get(),
+            area.get(),
+            sueldo.get(),
+            cuil.get(),
+            fecha_ingreso.get(),
+        )
+        tabla.insert(
+            "",
+            "end",
+            text=var_legajo.get(),
+            values=(
+                var_nombre.get(),
+                var_apellido.get(),
+                var_area.get(),
+                var_sueldo.get(),
+                var_cuil.get(),
+                var_ingreso.get(),
+            ),
+        )
+        nombre.set("")
+        apellido.set("")
+        area.set("")
+        sueldo.set("")
+        cuil.set("")
+        fecha_ingreso.set("")
+        boton_ver_datos.config(state=NORMAL)
+        messagebox.showinfo(title="Alta", message="Se cargo correctamente")
+        entry_legajo.focus_set()
+        actualizar_treeview(tabla)
+    else:
+        messagebox.showerror(
+            title="Error en el cuil",
+            message="El valor ingresado tiene que ser numérico, sin guiones ni spacios",
+        )
+    # except:
+    #     messagebox.showerror(title="Alta", message="Error al cargar")
 
 
 def baja():
@@ -171,38 +166,34 @@ def limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
 def modificar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
     if consulta("Modificar empleado", "¿Esta seguro de modificar el empleado?"):
         patron = "^\d+$"
-        if re.match(patron, legajo.get()):
-            if re.match(patron, cuil.get()):
-                modificar_base(
-                    legajo.get(),
-                    nombre.get(),
-                    apellido.get(),
-                    area.get(),
-                    sueldo.get(),
-                    cuil.get(),
-                    fecha_ingreso.get(),
-                )
-                item = tabla.focus()
-                tabla.item(
-                    item,
-                    text=var_legajo.get(),
-                    values=(
-                        var_nombre.get(),
-                        var_apellido.get(),
-                        var_area.get(),
-                        var_sueldo.get(),
-                        var_cuil.get(),
-                        var_ingreso.get(),
-                    ),
-                )
-                limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
-            else:
-                messagebox.showerror(
-                    title="Error en el cuil", message="Ingreselo sin guiones"
-                )
+        if re.match(patron, cuil.get()):
+            modificar_base(
+                legajo.get(),
+                nombre.get(),
+                apellido.get(),
+                area.get(),
+                sueldo.get(),
+                cuil.get(),
+                fecha_ingreso.get(),
+            )
+            item = tabla.focus()
+            tabla.item(
+                item,
+                text=var_legajo.get(),
+                values=(
+                    var_nombre.get(),
+                    var_apellido.get(),
+                    var_area.get(),
+                    var_sueldo.get(),
+                    var_cuil.get(),
+                    var_ingreso.get(),
+                ),
+            )
+            # LIMPIAMOS LOS ENTRY
+            limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
         else:
             messagebox.showerror(
-                title="Error en el legajo", message="El valor tiene que ser numérico"
+                title="Error en el cuil", message="Ingreselo sin guiones"
             )
     else:
         limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso)
@@ -267,8 +258,8 @@ def actualizar_treeview(tabla):
         tabla.insert(
             "",
             0,
-            text=fila[1],
-            values=(fila[2], fila[3], fila[4], fila[5], fila[6], fila[7]),
+            text=fila[0],
+            values=(fila[1], fila[2], fila[3], fila[4], fila[5], fila[6]),
         )
 
 
@@ -319,7 +310,9 @@ menubar.add_cascade(label="Apariencia", menu=apariencia)
 # FRAME INPUTS
 label_legajo = ttk.Label(frame_inputs, text=("N° de legajo"))
 label_legajo.grid(row=0, column=0, padx=10, pady=10, sticky=W)
-entry_legajo = ttk.Entry(frame_inputs, textvariable=var_legajo, width=30)
+entry_legajo = ttk.Entry(
+    frame_inputs, textvariable=var_legajo, width=30, state="readonly"
+)
 entry_legajo.grid(row=0, column=1, padx=10, pady=10, sticky=W)
 entry_legajo.focus_set()
 
@@ -359,7 +352,6 @@ boton_alta = Button(
     text="Alta",
     command=lambda: alta(
         tabla,
-        var_legajo,
         var_nombre,
         var_apellido,
         var_area,
