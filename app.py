@@ -6,14 +6,6 @@ import os
 import re
 
 
-# FUNCIONES DE MENSAJES
-def consulta(titulo, mensaje):
-    if messagebox.askyesno(f"{titulo}", f"{mensaje}"):
-        return True
-    else:
-        return False
-
-
 # FUNCIONES PARA LA BASE DE DATOS
 def conexion():
     con = sqlite3.connect("empleados.db")
@@ -74,51 +66,54 @@ def modificar_base(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
 
 # FUNCIONES
 def alta(tabla, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
-    # try:
-    patron = "^\d+$"
-    if re.match(patron, cuil.get()):
-        alta_base(
-            nombre.get(),
-            apellido.get(),
-            area.get(),
-            sueldo.get(),
-            cuil.get(),
-            fecha_ingreso.get(),
-        )
-        tabla.insert(
-            "",
-            "end",
-            text=var_legajo.get(),
-            values=(
-                var_nombre.get(),
-                var_apellido.get(),
-                var_area.get(),
-                var_sueldo.get(),
-                var_cuil.get(),
-                var_ingreso.get(),
-            ),
-        )
-        nombre.set("")
-        apellido.set("")
-        area.set("")
-        sueldo.set("")
-        cuil.set("")
-        fecha_ingreso.set("")
-        boton_ver_datos.config(state=NORMAL)
-        messagebox.showinfo(title="Alta", message="Se cargo correctamente")
-        entry_legajo.focus_set()
-        actualizar_treeview(tabla)
-    else:
-        messagebox.showerror(
-            title="Error en el cuil",
-            message="El valor ingresado tiene que ser numérico, sin guiones ni spacios",
-        )
-    # except:
-    #     messagebox.showerror(title="Alta", message="Error al cargar")
+    try:
+        patron = "^\d+$"
+        if re.match(patron, cuil.get()):
+            alta_base(
+                nombre.get(),
+                apellido.get(),
+                area.get(),
+                sueldo.get(),
+                cuil.get(),
+                fecha_ingreso.get(),
+            )
+            tabla.insert(
+                "",
+                "end",
+                text=var_legajo.get(),
+                values=(
+                    var_nombre.get(),
+                    var_apellido.get(),
+                    var_area.get(),
+                    var_sueldo.get(),
+                    var_cuil.get(),
+                    var_ingreso.get(),
+                ),
+            )
+            nombre.set("")
+            apellido.set("")
+            area.set("")
+            sueldo.set("")
+            cuil.set("")
+            fecha_ingreso.set("")
+            boton_ver_datos.config(state=NORMAL)
+            messagebox.showinfo(title="Alta", message="Se cargo correctamente")
+            entry_legajo.focus_set()
+            actualizar_treeview(tabla)
+        else:
+            messagebox.showerror(
+                title="Error en el cuil",
+                message="El valor ingresado tiene que ser numérico, sin guiones ni spacios",
+            )
+    except:
+        messagebox.showerror(title="Alta", message="Error al cargar")
 
 
 def baja():
-    if consulta("Baja de empleado", "¿Esta seguro de borrar el empleado?"):
+    continuar = messagebox.askyesno(
+        "Baja de empleado", "¿Esta seguro de borrar el empleado?"
+    )
+    if continuar:
         item = tabla.focus()
         legajo = tabla.item(item)["text"]
         baja_base(legajo)
@@ -164,7 +159,10 @@ def limpiar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
 
 
 def modificar(legajo, nombre, apellido, area, sueldo, cuil, fecha_ingreso):
-    if consulta("Modificar empleado", "¿Esta seguro de modificar el empleado?"):
+    continuar = messagebox.askyesno(
+        "Modificar empleado", "¿Esta seguro de modificar el empleado?"
+    )
+    if continuar:
         patron = "^\d+$"
         if re.match(patron, cuil.get()):
             modificar_base(
@@ -284,7 +282,7 @@ var_area = StringVar()
 var_sueldo = StringVar()
 var_ingreso = StringVar()
 
-
+# DECLARACION DE LOS FRAMES QUE SECTORIZAN EL ROOT
 frame_inputs = Frame(root)
 frame_inputs.grid(row=0, column=0, pady=10, sticky=EW)
 
@@ -411,14 +409,14 @@ tabla["columns"] = (
 scrollbar = ttk.Scrollbar(frame_tabla, orient="vertical", command=tabla.yview)
 scrollbar.grid(row=0, column=1, sticky=NS)
 tabla.configure(yscrollcommand=scrollbar.set)
-# ESTO SE PUEDE CAMBIAR POR UN FOR QUE PASE ESOS ATRIBUTOS
+
 tabla.column("#0", width=120, minwidth=120, anchor="w")
 for i in tabla["columns"]:
     tabla.column(i, width=120, minwidth=120, anchor="w")
 
-tabla.heading("#0", text="LEGAJO")
+tabla.heading("#0", text="LEGAJO", anchor="w")
 for i in tabla["columns"]:
-    tabla.heading(i, text=i)
+    tabla.heading(i, text=i, anchor="w")
 
 tabla.grid(row=0, column=0, sticky=EW)
 
