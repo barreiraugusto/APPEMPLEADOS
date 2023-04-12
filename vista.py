@@ -264,39 +264,39 @@ def principal(root):
     menubar.add_cascade(label="Apariencia", menu=apariencia)
 
     # FRAME INPUTS
-    label_legajo = ttk.Label(frame_inputs, text=("N° de legajo"))
+    label_legajo = ttk.Label(frame_inputs, text="N° de legajo")
     label_legajo.grid(row=0, column=0, padx=10, pady=10, sticky="w")
     entry_legajo = ttk.Entry(
         frame_inputs, textvariable=var_legajo, width=30, state="readonly"
     )
     entry_legajo.grid(row=0, column=1, padx=10, pady=10, sticky="w")
 
-    label_nombre = ttk.Label(frame_inputs, text=("Nombre"))
+    label_nombre = ttk.Label(frame_inputs, text="Nombre")
     label_nombre.grid(row=1, column=0, padx=10, pady=10, sticky="w")
     entry_nombre = ttk.Entry(frame_inputs, textvariable=var_nombre, width=30)
     entry_nombre.grid(row=1, column=1, padx=10, pady=10, sticky="w")
 
-    label_apellido = ttk.Label(frame_inputs, text=("Apellido"))
+    label_apellido = ttk.Label(frame_inputs, text="Apellido")
     label_apellido.grid(row=2, column=0, padx=10, pady=10, sticky="w")
     apellido = ttk.Entry(frame_inputs, textvariable=var_apellido, width=30)
     apellido.grid(row=2, column=1, padx=10, pady=10, sticky="w")
 
-    label_cuil = ttk.Label(frame_inputs, text=("C.U.I.L."))
+    label_cuil = ttk.Label(frame_inputs, text="C.U.I.L.")
     label_cuil.grid(row=3, column=0, padx=10, pady=10, sticky="w")
     cuil = ttk.Entry(frame_inputs, textvariable=var_cuil, width=30)
     cuil.grid(row=3, column=1, padx=10, pady=10, sticky="w")
 
-    label_area = ttk.Label(frame_inputs, text=("Area"))
+    label_area = ttk.Label(frame_inputs, text="Area")
     label_area.grid(row=0, column=2, padx=10, pady=10, sticky="w")
     area = ttk.Entry(frame_inputs, textvariable=var_area, width=30)
     area.grid(row=0, column=3, padx=10, pady=10, sticky="w")
 
-    label_sueldo = ttk.Label(frame_inputs, text=("Sueldo"))
+    label_sueldo = ttk.Label(frame_inputs, text="Sueldo")
     label_sueldo.grid(row=1, column=2, padx=10, pady=10, sticky="w")
     sueldo = ttk.Entry(frame_inputs, textvariable=var_sueldo, width=30)
     sueldo.grid(row=1, column=3, padx=10, pady=10, sticky="w")
 
-    label_ingreso = ttk.Label(frame_inputs, text=("Ingreso"))
+    label_ingreso = ttk.Label(frame_inputs, text="Ingreso")
     label_ingreso.grid(row=2, column=2, padx=10, pady=10, sticky="w")
     ingreso = ttk.Entry(frame_inputs, textvariable=var_ingreso, width=30)
     ingreso.grid(row=2, column=3, padx=10, pady=10, sticky="w")
