@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ORM &mdash; documentación de Empleados - 0.0.1</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/translations.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Búsqueda" href="search.html" />
+    <link rel="next" title="Vista" href="app.vista.html" />
+    <link rel="prev" title="Modelo" href="app.modelo.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Empleados
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="enunciado.html">El problema a resolver</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">APPEMPLEADOS</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="app.html">Aplicacion</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="app.html#submodules">Submodules</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="app.controlador.html">Controlador</a></li>
+<li class="toctree-l4"><a class="reference internal" href="app.modelo.html">Modelo</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ORM</a></li>
+<li class="toctree-l4"><a class="reference internal" href="app.vista.html">Vista</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="app.html#module-app">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="img.html">Imagenes</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Empleados</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">APPEMPLEADOS</a></li>
+          <li class="breadcrumb-item"><a href="app.html">Aplicacion</a></li>
+      <li class="breadcrumb-item active">ORM</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/app.orm.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-app.orm">
+<span id="orm"></span><h1>ORM<a class="headerlink" href="#module-app.orm" title="Enlazar permanentemente con este título"></a></h1>
+<p>Este módulo define un modelo de empleado utilizando Peewee como ORM y crea una base de datos SQLite llamada
+«empleadosORM.db» con una tabla correspondiente al modelo de empleado. También incluye métodos para calcular la
+antigüedad, los días de vacaciones y los pagos relacionados con el empleado.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="app.orm.BaseModel">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.orm.</span></span><span class="sig-name descname"><span class="pre">BaseModel</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#BaseModel"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.BaseModel" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">peewee.Model</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.BaseModel.DoesNotExist">
+<span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#app.orm.BaseModel.DoesNotExist" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">app.orm.BaseModelDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.BaseModel.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;AutoField:</span> <span class="pre">BaseModel.id&gt;</span></em><a class="headerlink" href="#app.orm.BaseModel.id" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">app.orm.</span></span><span class="sig-name descname"><span class="pre">EmpleadoORM</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#app.orm.BaseModel" title="app.orm.BaseModel"><code class="xref py py-class docutils literal notranslate"><span class="pre">app.orm.BaseModel</span></code></a></p>
+<p>Clase que representa un modelo de empleado y hereda de BaseModel.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.DoesNotExist">
+<span class="sig-name descname"><span class="pre">DoesNotExist</span></span><a class="headerlink" href="#app.orm.EmpleadoORM.DoesNotExist" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">app.orm.EmpleadoORMDoesNotExist</span></code></p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.apellido">
+<span class="sig-name descname"><span class="pre">apellido</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.apellido&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.apellido" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.area">
+<span class="sig-name descname"><span class="pre">area</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.area&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.area" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.calcula_antiguedad">
+<span class="sig-name descname"><span class="pre">calcula_antiguedad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM.calcula_antiguedad"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM.calcula_antiguedad" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Calculo de la antiguedad del empleado calculado en base a la fecha de ingreso y la fecha actual al momento de
+consultar.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve</dt>
+<dd class="field-odd"><p>Devuelve la antiguedad en dias, la cual es usada para los diferentes calculos.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.calcula_pago_antiguedad">
+<span class="sig-name descname"><span class="pre">calcula_pago_antiguedad</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM.calcula_pago_antiguedad"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM.calcula_pago_antiguedad" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Calcula el pago que debe recibir por su antiguedad calculada en el metodo calcula_antiguedad().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve</dt>
+<dd class="field-odd"><p>Devuelve un valor de tipo float con dos decimales equivalente al pago</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.calcula_pago_presentismo">
+<span class="sig-name descname"><span class="pre">calcula_pago_presentismo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM.calcula_pago_presentismo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM.calcula_pago_presentismo" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Calcula una suma fija o un porcentaje del sueldo básico que se otorga a los trabajadores que no faltaron
+en todo el mes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve</dt>
+<dd class="field-odd"><p>Devuelve el monto en un dato del tipy float.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.calcula_vacaciones">
+<span class="sig-name descname"><span class="pre">calcula_vacaciones</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM.calcula_vacaciones"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM.calcula_vacaciones" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Calcula los dias de vacaciones que le corresponden segun la antiguedad calculada en el metodo
+calcula_antiguidad().</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve</dt>
+<dd class="field-odd"><p>Devuelve un tipo string con los dias de vaciones que le corresponden al empleado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.cuil">
+<span class="sig-name descname"><span class="pre">cuil</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.cuil&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.cuil" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.fecha_ingreso">
+<span class="sig-name descname"><span class="pre">fecha_ingreso</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.fecha_ingreso&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.fecha_ingreso" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.id">
+<span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;AutoField:</span> <span class="pre">EmpleadoORM.id&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.id" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.nombre">
+<span class="sig-name descname"><span class="pre">nombre</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.nombre&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.nombre" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.nombre_completo">
+<span class="sig-name descname"><span class="pre">nombre_completo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/orm.html#EmpleadoORM.nombre_completo"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.orm.EmpleadoORM.nombre_completo" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd><p>Concatena el nombre y el apellido del enpleado.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Devuelve</dt>
+<dd class="field-odd"><p>Devuelve el nombre completo del empleado.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="app.orm.EmpleadoORM.sueldo">
+<span class="sig-name descname"><span class="pre">sueldo</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;CharField:</span> <span class="pre">EmpleadoORM.sueldo&gt;</span></em><a class="headerlink" href="#app.orm.EmpleadoORM.sueldo" title="Enlazar permanentemente con esta definición"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="app.modelo.html" class="btn btn-neutral float-left" title="Modelo" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="app.vista.html" class="btn btn-neutral float-right" title="Vista" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2023, Grupo ANAT.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
