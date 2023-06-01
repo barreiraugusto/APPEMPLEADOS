@@ -1,5 +1,5 @@
-Modelo
-======
+Modelo (reemplazado por ORM)
+============================
 
 .. automodule:: app.modelo
    :members:

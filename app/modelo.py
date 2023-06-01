@@ -100,6 +100,7 @@ class Modelo:
         """
         Actualiza los datos del registro correspondiente al empleado identificado por el número de legajo proporcionado
         en la tabla "empleado" con los nuevos valores de los datos proporcionados.
+
         :param legajo: Numero unico que identifica al empleado en la empresa.
         :param nombre: Nombre del empleado.
         :param apellido: Apellido del empleado.

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Modelo &mdash; documentación de Empleados - 0.0.1</title>
+  <title>Modelo (reemplazado por ORM) &mdash; documentación de Empleados - 0.0.1</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -49,7 +49,7 @@
 <li class="toctree-l2 current"><a class="reference internal" href="app.html">Aplicacion</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="app.html#submodules">Submodules</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="app.controlador.html">Controlador</a></li>
-<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelo</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Modelo (reemplazado por ORM)</a></li>
 <li class="toctree-l4"><a class="reference internal" href="app.orm.html">ORM</a></li>
 <li class="toctree-l4"><a class="reference internal" href="app.vista.html">Vista</a></li>
 </ul>
@@ -78,7 +78,7 @@
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="modules.html">APPEMPLEADOS</a></li>
           <li class="breadcrumb-item"><a href="app.html">Aplicacion</a></li>
-      <li class="breadcrumb-item active">Modelo</li>
+      <li class="breadcrumb-item active">Modelo (reemplazado por ORM)</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/app.modelo.rst.txt" rel="nofollow"> Ver código fuente de la página</a>
       </li>
@@ -89,7 +89,7 @@
            <div itemprop="articleBody">
              
   <section id="module-app.modelo">
-<span id="modelo"></span><h1>Modelo<a class="headerlink" href="#module-app.modelo" title="Enlazar permanentemente con este título"></a></h1>
+<span id="modelo-reemplazado-por-orm"></span><h1>Modelo (reemplazado por ORM)<a class="headerlink" href="#module-app.modelo" title="Enlazar permanentemente con este título"></a></h1>
 <p>Este módulo contiene funciones para interactuar con una base de datos SQLite que contiene información de empleados.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="app.modelo.Modelo">
@@ -162,14 +162,20 @@
 <dt class="sig sig-object py" id="app.modelo.Modelo.modificar_base">
 <span class="sig-name descname"><span class="pre">modificar_base</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">legajo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nombre</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apellido</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sueldo</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cuil</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fecha_ingreso</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/app/modelo.html#Modelo.modificar_base"><span class="viewcode-link"><span class="pre">[fuente]</span></span></a><a class="headerlink" href="#app.modelo.Modelo.modificar_base" title="Enlazar permanentemente con esta definición"></a></dt>
 <dd><p>Actualiza los datos del registro correspondiente al empleado identificado por el número de legajo proporcionado
-en la tabla «empleado» con los nuevos valores de los datos proporcionados.
-:param legajo: Numero unico que identifica al empleado en la empresa.
-:param nombre: Nombre del empleado.
-:param apellido: Apellido del empleado.
-:param area: Area en el que desempeña su labor.
-:param sueldo: Remuneracion mensual.
-:param cuil: Clave unica de identificacion laboral.
-:param fecha_ingreso: Fecha de ingreso a la empresa.</p>
+en la tabla «empleado» con los nuevos valores de los datos proporcionados.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parámetros</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>legajo</strong> – Numero unico que identifica al empleado en la empresa.</p></li>
+<li><p><strong>nombre</strong> – Nombre del empleado.</p></li>
+<li><p><strong>apellido</strong> – Apellido del empleado.</p></li>
+<li><p><strong>area</strong> – Area en el que desempeña su labor.</p></li>
+<li><p><strong>sueldo</strong> – Remuneracion mensual.</p></li>
+<li><p><strong>cuil</strong> – Clave unica de identificacion laboral.</p></li>
+<li><p><strong>fecha_ingreso</strong> – Fecha de ingreso a la empresa.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
