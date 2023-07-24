@@ -6,6 +6,12 @@ antigüedad, los días de vacaciones y los pagos relacionados con el empleado.
 import datetime
 
 from peewee import SqliteDatabase, Model, CharField
+from decoradores import registrar_info
+
+import logging
+
+# Configuración básica del registro (log)
+logging.basicConfig(filename='app.log', level=logging.INFO)
 
 database = SqliteDatabase("empleadosORM.db")
 
@@ -26,6 +32,7 @@ class EmpleadoORM(BaseModel):
     sueldo = CharField()
     fecha_ingreso = CharField()
 
+    @registrar_info
     def calcula_antiguedad(self):
         """
         Calculo de la antiguedad del empleado calculado en base a la fecha de ingreso y la fecha actual al momento de
@@ -40,6 +47,7 @@ class EmpleadoORM(BaseModel):
         antiguedad = fecha_actual - fecha_ingreso_formateada
         return antiguedad.days
 
+    @registrar_info
     def calcula_vacaciones(self):
         """
         Calcula los dias de vacaciones que le corresponden segun la antiguedad calculada en el metodo
@@ -61,6 +69,7 @@ class EmpleadoORM(BaseModel):
             dias_vacaciones = "30 días hábiles"
         return dias_vacaciones
 
+    @registrar_info
     def calcula_pago_presentismo(self):
         """
         Calcula una suma fija o un porcentaje del sueldo básico que se otorga a los trabajadores que no faltaron
@@ -70,6 +79,7 @@ class EmpleadoORM(BaseModel):
         """
         return round(float(self.sueldo) * 0.1)
 
+    @registrar_info
     def calcula_pago_antiguedad(self):
         """
         Calcula el pago que debe recibir por su antiguedad calculada en el metodo calcula_antiguedad().
@@ -80,6 +90,7 @@ class EmpleadoORM(BaseModel):
         pago = float(self.sueldo) * 0.01 * year_trabajados
         return round(pago, 2)
 
+    @registrar_info
     def nombre_completo(self):
         """
         Concatena el nombre y el apellido del enpleado.

@@ -10,6 +10,7 @@ from tkinter import ttk
 from peewee import IntegrityError
 from tkcalendar import DateEntry
 
+from app.decoradores import registrar_info
 from app.orm import EmpleadoORM
 
 
@@ -54,10 +55,6 @@ class Vista:
         self.frame_footer = Frame(self.root)
         self.frame_footer.grid(row=3, column=0, pady=10, sticky="e")
 
-        # self.frame_footer.configure(background="red")
-        # self.frame_input.configure(background="yellow")
-        # self.frame_botones.configure(background="green")
-        # self.frame_tabla.configure(background="blue")
         # MENU
         self.menubar = Menu(self.root)
         self.root.config(menu=self.menubar)
@@ -235,6 +232,7 @@ class Vista:
         self.resultado_pago_presentismo.config(background="#d3d3d3", foreground="black")
         self.resultado_pago_antiguedad.config(background="#d3d3d3", foreground="black")
 
+    @registrar_info
     def alta(self):
         """
         LLama ala funcion alta en modelo.py y muestra la carga en el treeview.
@@ -260,14 +258,20 @@ class Vista:
                 messagebox.showinfo(title="Alta", message="Se cargo correctamente")
                 self.entry_legajo.focus_set()
                 self.actualizar_treeview()
+                return f"Se ingreso a {nuevo_empleado.nombre_completo()}"
             else:
                 messagebox.showerror(
                     title="Error en el self.cuil",
-                    message="El valor ingresado tiene que ser numérico, sin guiones ni spacios",
+                    message="El valor ingresado tiene que ser numérico, sin guiones ni espacios",
                 )
+                return f"ERROR AL INGRESAR EL CUIT DE {self.var_nombre.get()} {self.var_apellido.get()}"
+
+
+
         except IntegrityError:
             messagebox.showerror(title="Alta", message="El CUIL no se puede repetir")
 
+    @registrar_info
     def baja(self):
         """LLama a la funcion baja de modelo.py y elimina el registro del treeview."""
         continuar = messagebox.askyesno(
@@ -282,6 +286,8 @@ class Vista:
             if len(self.tabla.get_children()) == 0:
                 self.boton_ver_datos.config(state="disabled")
             self.entry_legajo.focus_set()
+
+            return f"Se elimino a {empleado_orm.nombre_completo()}"
         else:
             pass
 
@@ -341,6 +347,7 @@ class Vista:
         self.boton_baja.config(state="normal")
         self.entry_nombre.focus_set()
 
+    @registrar_info
     def modificar(self):
         """
         LLama a la funcion modificar de modulo.py y muestra en pantalla el resultado de la accion a través de messagebox.
@@ -351,14 +358,26 @@ class Vista:
         if continuar:
             patron = "^\d+$"
             if re.match(patron, self.cuil.get()):
-                empleado_orm = EmpleadoORM.get(EmpleadoORM.id == self.var_legajo.get())
-                empleado_orm.nombre = self.var_nombre.get()
-                empleado_orm.apellido = self.var_apellido.get()
-                empleado_orm.cuil = self.var_cuil.get()
-                empleado_orm.area = self.var_area.get()
-                empleado_orm.sueldo = self.var_sueldo.get()
-                empleado_orm.fecha_ingreso = self.ingreso.get_date()
-                empleado_orm.save()
+                empleado = EmpleadoORM.get(EmpleadoORM.id == self.var_legajo.get())
+                valores_anteriores = empleado.__data__.copy()
+                nuevos_datos = {
+                    "nombre": self.var_nombre.get(),
+                    "apellido": self.var_apellido.get(),
+                    "cuil": self.var_cuil.get(),
+                    "area": self.var_area.get(),
+                    "sueldo": self.var_sueldo.get(),
+                    "fecha_ingreso": self.ingreso.get_date()
+                }
+                campos_modificados = {}
+
+                for campo, valor_nuevo in nuevos_datos.items():
+                    valor_actual = getattr(empleado, campo)
+                    if valor_actual != valor_nuevo:
+                        campos_modificados[campo] = {"De:": valor_actual, "A:": valor_nuevo}
+                        setattr(empleado, campo, valor_nuevo)
+
+                empleado.save()
+
                 item = self.tabla.focus()
                 self.tabla.item(
                     item,
@@ -373,10 +392,12 @@ class Vista:
                     ),
                 )
                 self.limpiar()
+                return f"Se modifico {campos_modificados}"
             else:
                 messagebox.showerror(
                     title="Error en el cuil", message="Ingreselo sin guiones"
                 )
+                return f"ERROR AL MODIFICAR EL CUIT DE {self.var_nombre.get()} {self.var_apellido.get()}"
         else:
             self.limpiar()
 

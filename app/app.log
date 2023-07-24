@@ -1,0 +1,7 @@
+INFO:root:Resultado del método calcula_antiguedad: 5135
+INFO:root:Resultado del método calcula_antiguedad: 5135
+INFO:root:Resultado del método calcula_vacaciones: 20 días hábiles o 28 corridos
+INFO:root:Resultado del método calcula_antiguedad: 5135
+INFO:root:Resultado del método calcula_pago_antiguedad: 1.69
+INFO:root:Resultado del método calcula_pago_presentismo: 1
+INFO:root:Resultado del método modificar: Se modifico {'sueldo': {'De:': '12', 'A:': '400000'}, 'fecha_ingreso': {'De:': '2009-07-01', 'A:': datetime.date(2009, 7, 1)}}
