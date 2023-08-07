@@ -10,8 +10,11 @@ from tkinter import ttk
 from peewee import IntegrityError
 from tkcalendar import DateEntry
 
+from app import observadores
 from app.decoradores import registrar_info
 from app.orm import EmpleadoORM
+from comunicacion.servidor import Server
+from empleado_registro import EmpleadoRegistro
 
 
 class Vista:
@@ -32,7 +35,6 @@ class Vista:
             self.root.iconphoto(False, PhotoImage(file=ruta_icono))
         except:
             pass
-
         # DECLARACION DE VARIABLES DE TKINTER
         self.var_legajo = StringVar()
         self.var_nombre = StringVar()
@@ -42,7 +44,9 @@ class Vista:
         self.var_sueldo = StringVar()
         # self.var_ingreso = StringVar()
 
-        # DECLARACION DE LOS FRAMES QUE SECTORIZAN EL self.root
+        self.servidor = Server()
+
+        # DECLARACION DE LOS FRAMES QUE SECTORIZAN EL ROOT
         self.frame_input = Frame(self.root)
         self.frame_input.grid(row=0, column=0, pady=10, sticky="ew")
 
@@ -170,67 +174,52 @@ class Vista:
             self.boton_ver_datos.config(state="disabled")
 
         # FRAME FOOTER
-        self.boton_cerrar = Button(self.frame_footer, text="Cerrar", command=self.root.quit)
+        self.boton_cerrar = Button(self.frame_footer, text="Cerrar", command=lambda: self.cerrar())
         self.boton_cerrar.grid(row=0, column=0, padx=10, pady=10)
+
+        self.frames = [self.frame_footer, self.frame_tabla, self.frame_input, self.frame_botones, self.root]
+        self.botones = [self.boton_ver_datos, self.boton_modificar, self.boton_cerrar, self.boton_baja, self.boton_alta]
+        self.labels = [self.label_area, self.resultado_pago_antiguedad, self.resultado_pago_presentismo,
+                       self.resultado_vacaciones, self.resultado_antiguedad, self.label_vacaciones,
+                       self.label_antiguedad, self.label_pago_antiguedad, self.label_pago_presentismo,
+                       self.label_ingreso, self.label_legajo, self.label_sueldo, self.label_nombre, self.label_cuil,
+                       self.label_apellido, self.menubar]
+
+        self.auditor = observadores.AuditorRegistro()
+        self.rrhh = observadores.DepartamentoRH()
+        self.registrar = EmpleadoRegistro()
+        self.registrar.registrar_observador(self.auditor)
+        self.registrar.registrar_observador(self.rrhh)
 
     def tema_oscuro(self):
         """Cambia el aspecto del App tornandola mas oscura."""
-        self.root.config(background="gray20")
-        self.frame_botones.configure(background="gray20")
-        self.frame_input.config(background="gray20")
-        self.frame_tabla.config(background="gray20")
-        self.frame_footer.config(background="gray20")
-        self.label_apellido.configure(background="gray20", foreground="gray80")
-        self.label_cuil.config(background="gray20", foreground="gray80")
-        self.label_nombre.config(background="gray20", foreground="gray80")
-        self.label_sueldo.config(background="gray20", foreground="gray80")
-        self.label_legajo.config(background="gray20", foreground="gray80")
-        self.label_ingreso.config(background="gray20", foreground="gray80")
-        self.label_pago_presentismo.config(background="gray20", foreground="gray80")
-        self.label_pago_antiguedad.config(background="gray20", foreground="gray80")
-        self.label_antiguedad.config(background="gray20", foreground="gray80")
-        self.label_vacaciones.config(background="gray20", foreground="gray80")
-        self.resultado_antiguedad.config(background="gray20", foreground="gray80")
-        self.resultado_vacaciones.config(background="gray20", foreground="gray80")
-        self.resultado_pago_presentismo.config(background="gray20", foreground="gray80")
-        self.resultado_pago_antiguedad.config(background="gray20", foreground="gray80")
-        self.label_area.config(background="gray20", foreground="gray80")
-        self.boton_alta.config(background="gray20", fg="gray80")
-        self.boton_baja.config(background="gray20", fg="gray80")
-        self.boton_cerrar.config(background="gray20", fg="gray80")
-        self.boton_modificar.config(background="gray20", fg="gray80")
-        self.boton_ver_datos.config(background="gray20", fg="gray80")
-        self.menubar.config(background="gray20", fg="gray80")
+
+        fondo = "gray20"
+        foreground = "gray80"
+
+        for frame in self.frames:
+            frame.config(background=fondo)
+
+        for label in self.labels:
+            label.configure(background=fondo, foreground=foreground)
+
+        for boton in self.botones:
+            boton.config(background=fondo, fg=foreground)
 
     def tema_claro(self):
-        """Cambia el aspecto del App tornandola mas clara."""
-        self.root.config(background="#d3d3d3")
-        self.frame_botones.configure(background="#d3d3d3")
-        self.frame_input.config(background="#d3d3d3")
-        self.frame_tabla.config(background="#d3d3d3")
-        self.frame_footer.config(background="#d3d3d3")
-        self.label_apellido.configure(background="#d3d3d3", foreground="black")
-        self.label_cuil.config(background="#d3d3d3", foreground="black")
-        self.label_ingreso.config(background="#d3d3d3", foreground="black")
-        self.label_nombre.config(background="#d3d3d3", foreground="black")
-        self.label_sueldo.config(background="#d3d3d3", foreground="black")
-        self.label_legajo.config(background="#d3d3d3", foreground="black")
-        self.label_ingreso.config(background="#d3d3d3", foreground="black")
-        self.label_area.config(background="#d3d3d3", foreground="black")
-        self.boton_alta.config(background="#d3d3d3", fg="black")
-        self.boton_baja.config(background="#d3d3d3", fg="black")
-        self.boton_cerrar.config(background="#d3d3d3", fg="black")
-        self.boton_modificar.config(background="#d3d3d3", fg="black")
-        self.boton_ver_datos.config(background="#d3d3d3", fg="black")
-        self.menubar.config(background="#d3d3d3", fg="black")
-        self.label_pago_presentismo.config(background="#d3d3d3", foreground="black")
-        self.label_pago_antiguedad.config(background="#d3d3d3", foreground="black")
-        self.label_antiguedad.config(background="#d3d3d3", foreground="black")
-        self.label_vacaciones.config(background="#d3d3d3", foreground="black")
-        self.resultado_antiguedad.config(background="#d3d3d3", foreground="black")
-        self.resultado_vacaciones.config(background="#d3d3d3", foreground="black")
-        self.resultado_pago_presentismo.config(background="#d3d3d3", foreground="black")
-        self.resultado_pago_antiguedad.config(background="#d3d3d3", foreground="black")
+        """Cambia el aspecto del App tornandola mas oscura."""
+
+        fondo = "#d3d3d3"
+        foreground = "black"
+
+        for frame in self.frames:
+            frame.config(background=fondo)
+
+        for label in self.labels:
+            label.configure(background=fondo, foreground=foreground)
+
+        for boton in self.botones:
+            boton.config(background=fondo, fg=foreground)
 
     @registrar_info
     def alta(self):
@@ -248,25 +237,17 @@ class Vista:
                                              fecha_ingreso=str(self.ingreso.get_date())
                                              )
                 nuevo_empleado.save()
-                self.var_nombre.set("")
-                self.var_apellido.set("")
-                self.var_area.set("")
-                self.var_sueldo.set("")
-                self.var_cuil.set("")
-                self.ingreso.set_date(datetime.datetime.today())
-                self.boton_ver_datos.config(state="normal")
-                messagebox.showinfo(title="Alta", message="Se cargo correctamente")
-                self.entry_legajo.focus_set()
+                self.limpiar()
                 self.actualizar_treeview()
+                messagebox.showinfo(title="Alta", message="Se cargo correctamente")
+                self.registrar.agregar_empleado(nuevo_empleado.nombre_completo)
                 return f"Se ingreso a {nuevo_empleado.nombre_completo()}"
             else:
                 messagebox.showerror(
-                    title="Error en el self.cuil",
+                    title="Error en el cuil",
                     message="El valor ingresado tiene que ser numérico, sin guiones ni espacios",
                 )
                 return f"ERROR AL INGRESAR EL CUIT DE {self.var_nombre.get()} {self.var_apellido.get()}"
-
-
 
         except IntegrityError:
             messagebox.showerror(title="Alta", message="El CUIL no se puede repetir")
@@ -317,13 +298,6 @@ class Vista:
         self.boton_alta.config(state="disabled")
         self.boton_baja.config(state="disabled")
         self.entry_nombre.focus_set()
-
-        # empleado = Empleado(valores[0], valores[1], valores[4], valores[2], valores[3], str(valores[5]))
-
-        # self.resultado_antiguedad.configure(text=f"{str(int(empleado.calcula_antiguedad() / 365.2425))} años")
-        # self.resultado_vacaciones.configure(text=str(empleado.calcula_vacaciones()))
-        # self.resultado_pago_antiguedad.configure(text=str(empleado.calcula_pago_antiguedad()))
-        # self.resultado_pago_presentismo.configure(text=str(empleado.calcula_pago_presentismo()))
         self.boton_modificar.config(state="normal")
         self.boton_ver_datos.config(state="disabled")
         self.boton_alta.config(state="disabled")
@@ -346,6 +320,7 @@ class Vista:
         self.boton_alta.config(state="normal")
         self.boton_baja.config(state="normal")
         self.entry_nombre.focus_set()
+        self.actualizar_treeview()
 
     @registrar_info
     def modificar(self):
@@ -359,7 +334,6 @@ class Vista:
             patron = "^\d+$"
             if re.match(patron, self.cuil.get()):
                 empleado = EmpleadoORM.get(EmpleadoORM.id == self.var_legajo.get())
-                valores_anteriores = empleado.__data__.copy()
                 nuevos_datos = {
                     "nombre": self.var_nombre.get(),
                     "apellido": self.var_apellido.get(),
@@ -392,6 +366,7 @@ class Vista:
                     ),
                 )
                 self.limpiar()
+                self.registrar.actualizar_empleado(empleado, campos_modificados)
                 return f"Se modifico {campos_modificados}"
             else:
                 messagebox.showerror(
@@ -414,3 +389,7 @@ class Vista:
             self.tabla.insert("", 0, text=empleado.id, values=(
                 empleado.nombre, empleado.apellido, empleado.area, empleado.sueldo, empleado.cuil,
                 empleado.fecha_ingreso))
+
+    def cerrar(self):
+        self.servidor.stop_server()
+        self.root.quit()

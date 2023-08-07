@@ -4,11 +4,11 @@ Este módulo define un modelo de empleado utilizando Peewee como ORM y crea una 
 antigüedad, los días de vacaciones y los pagos relacionados con el empleado.
 """
 import datetime
+import logging
 
 from peewee import SqliteDatabase, Model, CharField
-from decoradores import registrar_info
 
-import logging
+from decoradores import registrar_info
 
 # Configuración básica del registro (log)
 logging.basicConfig(filename='app.log', level=logging.INFO)

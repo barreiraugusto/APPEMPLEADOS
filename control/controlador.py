@@ -5,8 +5,8 @@ Esta aplicacion esta pensada para llevar el control de los datos de los empleado
 """
 from tkinter import Tk
 
-from app.vista import Vista
-from comunicacion.servidor import Server
+from comunicacion.cliente import UDPSender
+from control.vista import Registro
 
 
 class Controlador:
@@ -16,9 +16,12 @@ class Controlador:
 
     def __init__(self, root):
         self.controlador = root
-        self.vista = Vista(self.controlador)
-        self.servidor = Server()
-        self.servidor.try_connection()
+        self.vista = Registro(self.controlador)
+        self.cliente = UDPSender("localhost", 9999)
+        respuesta = self.cliente.send_value("Conectado!")
+        print(respuesta)
+        if respuesta == b'\xa0':
+            self.vista.indicador_color.config(background="green")
 
 
 if __name__ == "__main__":
