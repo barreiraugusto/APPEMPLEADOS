@@ -16,7 +16,6 @@ from app.orm import EmpleadoORM
 from comunicacion.servidor import Server
 from empleado_registro import EmpleadoRegistro
 
-
 class Vista:
     def __init__(self, root):
         """
@@ -28,7 +27,8 @@ class Vista:
         self.root.title("ALTA Y BAJA DE PERSONAL")
         self.root.resizable(False, False)
         self.root.geometry("1230x550")
-        # self.root.config(background="gray")
+        self.root.overrideredirect(False)
+        self.root.protocol("WM_DELETE_WINDOW", self.no_cerrar_ventana())
 
         try:
             ruta_icono = os.path.join(os.path.dirname(__file__), "img/icono.png")
@@ -191,6 +191,8 @@ class Vista:
         self.registrar.registrar_observador(self.auditor)
         self.registrar.registrar_observador(self.rrhh)
 
+    def no_cerrar_ventana(self):
+        pass
     def tema_oscuro(self):
         """Cambia el aspecto del App tornandola mas oscura."""
 
@@ -367,7 +369,13 @@ class Vista:
                 )
                 self.limpiar()
                 self.registrar.actualizar_empleado(empleado, campos_modificados)
-                return f"Se modifico {campos_modificados}"
+                info = ""
+                for k, v in campos_modificados.items():
+                    info += f" {k.upper()}:"
+                    for kv, vv in v.items():
+                        info += f" {kv}"
+                        info += f" {vv}"
+                return f"Se modifico {info}"
             else:
                 messagebox.showerror(
                     title="Error en el cuil", message="Ingreselo sin guiones"

@@ -25,8 +25,6 @@ class Server:
         if var:
             proceso = subprocess.Popen([sys.executable, ruta])
             proceso.communicate()
-        else:
-            print(" var = False")
 
     def stop_server(self, ):
         global proceso

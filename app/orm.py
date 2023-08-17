@@ -8,7 +8,7 @@ import logging
 
 from peewee import SqliteDatabase, Model, CharField
 
-from decoradores import registrar_info
+from app.decoradores import registrar_info
 
 # Configuración básica del registro (log)
 logging.basicConfig(filename='app.log', level=logging.INFO)
@@ -90,7 +90,6 @@ class EmpleadoORM(BaseModel):
         pago = float(self.sueldo) * 0.01 * year_trabajados
         return round(pago, 2)
 
-    @registrar_info
     def nombre_completo(self):
         """
         Concatena el nombre y el apellido del enpleado.

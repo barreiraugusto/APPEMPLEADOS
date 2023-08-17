@@ -10,8 +10,13 @@ class UDPSender:
     def send_value(self, value):
         packed_data = value.encode('utf-8')
         self.sock.sendto(packed_data, (self.host, self.port))
-        received_data, server_address = self.sock.recvfrom(1024)
-        return received_data
+        self.sock.settimeout(2)
+
+        try:
+            received_data, server_address = self.sock.recvfrom(1024)
+            return received_data
+        except socket.timeout:
+            return None
 
     def close(self):
         self.sock.close()

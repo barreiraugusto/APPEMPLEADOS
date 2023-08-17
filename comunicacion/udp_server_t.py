@@ -1,27 +1,30 @@
-import socket
-import threading
 import socketserver
-from pathlib import Path
-import os
-import sys
-import binascii
 from datetime import datetime
 
+from app.orm import EmpleadoORM
 
 # global HOST
 global PORT
 
 
 class MyUDPHandler(socketserver.BaseRequestHandler):
+
     def handle(self):
         data = self.request[0].strip()
         socket = self.request[1]
+        mensaje = data.decode('UTF-8')
+        if mensaje == "control":
+            respuesta = "conectado"
+        else:
+            print(f"{datetime.today()} - {mensaje}")
+            try:
+                empleado = EmpleadoORM.get(EmpleadoORM.id == mensaje)
+                respuesta = empleado.nombre_completo()
+            except EmpleadoORM.DoesNotExist:
+                respuesta = "False"
 
-        print(f"{datetime.today()} - {data.decode('UTF-8')}")
-
-        value2 = 0xA0
         packed_data_2 = bytearray()
-        packed_data_2 += value2.to_bytes(1, "big")
+        packed_data_2 += respuesta.encode('utf-8')
         socket.sendto(packed_data_2, self.client_address)
 
 
