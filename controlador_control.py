@@ -3,17 +3,15 @@ Modulo de Control de la App.
 
 Esta aplicacion esta pensada para llevar el control de los datos de los empleados de una empresa.
 """
-import threading
-import time
+from config import directorio_proyecto
 from tkinter import Tk
 
-from comunicacion.cliente import UDPSender
 from control.vista import Registro
 
 
 class Controlador:
     """
-    Está es la clase controlador de la app
+    Está es la clase controlador de la app del control biometrico
     """
 
     def __init__(self, root):

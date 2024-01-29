@@ -24,6 +24,5 @@ class EmpleadoRegistro:
         self._observadores.remove(observador)
 
     def notificar_observadores(self, mensaje):
-        print(self._observadores)
         for observador in self._observadores:
             observador.actualizar(mensaje)

@@ -1,0 +1,15 @@
+INFO:root:Resultado del m√©todo alta: Se ingreso a Auguso Barreira
+INFO:root:Resultado del m√©todo calcula_antiguedad: 5160
+INFO:root:Resultado del m√©todo calcula_antiguedad: 5160
+INFO:root:Resultado del m√©todo calcula_vacaciones: 20 d√≠as h√°biles o 28 corridos
+INFO:root:Resultado del m√©todo calcula_antiguedad: 5160
+INFO:root:Resultado del m√©todo calcula_pago_antiguedad: 42382.8
+INFO:root:Resultado del m√©todo calcula_pago_presentismo: 30000
+INFO:root:Resultado del m√©todo modificar: Se modifico  SUELDO: De: 300000 A: 30000 FECHA_INGRESO: De: 2009-07-01 A: 2009-07-01
+INFO:root:Resultado del mÈtodo calcula_antiguedad: 5160
+INFO:root:Resultado del mÈtodo calcula_antiguedad: 5160
+INFO:root:Resultado del mÈtodo calcula_vacaciones: 20 dÌas h·biles o 28 corridos
+INFO:root:Resultado del mÈtodo calcula_antiguedad: 5160
+INFO:root:Resultado del mÈtodo calcula_pago_antiguedad: 4238.28
+INFO:root:Resultado del mÈtodo calcula_pago_presentismo: 3000
+INFO:root:Resultado del mÈtodo modificar: Se modifico  SUELDO: De: 30000 A: 3000000 FECHA_INGRESO: De: 2009-07-01 A: 2009-07-01

@@ -1,9 +1,14 @@
+import sys
+import os
+
+current_directory = os.path.dirname(os.path.abspath(__file__))
+project_directory = os.path.dirname(current_directory)
+sys.path.append(project_directory)
 import socketserver
 from datetime import datetime
 
 from app.orm import EmpleadoORM
 
-# global HOST
 global PORT
 
 

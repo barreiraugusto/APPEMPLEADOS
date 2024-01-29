@@ -14,7 +14,7 @@ from app import observadores
 from app.decoradores import registrar_info
 from app.orm import EmpleadoORM
 from comunicacion.servidor import Server
-from empleado_registro import EmpleadoRegistro
+from app.empleado_registro import EmpleadoRegistro
 
 class Vista:
     def __init__(self, root):

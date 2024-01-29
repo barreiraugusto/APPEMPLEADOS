@@ -3,6 +3,8 @@ Modulo de Control de la App.
 
 Esta aplicacion esta pensada para llevar el control de los datos de los empleados de una empresa.
 """
+
+from config import directorio_proyecto
 from tkinter import Tk
 
 from app.vista import Vista
